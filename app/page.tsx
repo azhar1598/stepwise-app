@@ -1,101 +1,190 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import {
+  Container,
+  Title,
+  Text,
+  Grid,
+  Card,
+  Button,
+  Badge,
+} from "@mantine/core";
+import { Camera, Check, ArrowRight, Settings, Plus } from "lucide-react";
+import Link from "next/link";
+import TaskCard from "./components/TaskCard";
 
-export default function Home() {
+export default function Dashboard() {
+  const [tasks, setTasks] = useState([
+    {
+      id: 1,
+      name: "Making the Bed",
+      completed: true,
+      steps: 5,
+      category: "Home",
+    },
+    {
+      id: 2,
+      name: "Brushing Teeth",
+      completed: false,
+      steps: 8,
+      category: "Hygiene",
+    },
+    {
+      id: 3,
+      name: "Making Breakfast",
+      completed: false,
+      steps: 12,
+      category: "Cooking",
+    },
+    {
+      id: 4,
+      name: "Getting Dressed",
+      completed: true,
+      steps: 6,
+      category: "Personal Care",
+    },
+    {
+      id: 5,
+      name: "Doing Laundry",
+      completed: false,
+      steps: 10,
+      category: "Home",
+    },
+    {
+      id: 6,
+      name: "Setting the Table",
+      completed: false,
+      steps: 7,
+      category: "Home",
+    },
+  ]);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <Container size="lg" className="py-12 px-4">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <Title className="text-3xl font-bold">Welcome back, Sam!</Title>
+          <Text className="text-gray-600">Let's practice some daily tasks</Text>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Button
+          leftSection={<Camera size={18} />}
+          className="bg-blue-600 hover:bg-blue-700"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          Scan Object
+        </Button>
+      </div>
+
+      <div className="bg-blue-50 rounded-lg p-6 mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div>
+            <Text fw={700} className="text-lg mb-2">
+              Today's Progress
+            </Text>
+            <Text className="text-gray-600">
+              You've completed 2 out of 6 tasks today. Keep going!
+            </Text>
+          </div>
+          <div className="mt-4 md:mt-0">
+            <div className="w-full bg-gray-200 rounded-full h-4">
+              <div
+                className="bg-blue-600 h-4 rounded-full"
+                style={{ width: "33%" }}
+              ></div>
+            </div>
+            <Text className="text-right mt-1 text-sm">33% Complete</Text>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-4">
+          <Title order={2} className="text-2xl font-bold">
+            Your Tasks
+          </Title>
+          <Button
+            variant="subtle"
+            rightSection={<ArrowRight size={16} />}
+            className="text-blue-600"
+          >
+            View All
+          </Button>
+        </div>
+
+        <Grid>
+          {tasks.map((task) => (
+            <Grid.Col key={task.id} md={6} lg={4}>
+              <TaskCard task={task} />
+            </Grid.Col>
+          ))}
+          <Grid.Col span={12}>
+            <Card
+              shadow="sm"
+              p="lg"
+              className="h-full flex flex-col items-center justify-center border-2 border-dashed border-gray-300"
+            >
+              <Button
+                variant="subtle"
+                leftSection={<Plus size={20} />}
+                className="text-gray-500"
+              >
+                Add New Task
+              </Button>
+            </Card>
+          </Grid.Col>
+        </Grid>
+      </div>
+
+      <div>
+        <Title order={2} className="text-2xl font-bold mb-4">
+          Suggested Skills
+        </Title>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card shadow="sm" p="lg">
+            <Badge color="blue" className="mb-2">
+              New
+            </Badge>
+            <Title order={3} className="text-xl mb-2">
+              Using Public Transport
+            </Title>
+            <Text className="text-gray-600 mb-4">
+              Learn how to navigate buses and trains safely.
+            </Text>
+            <Button variant="light" className="w-full">
+              Start Learning
+            </Button>
+          </Card>
+
+          <Card shadow="sm" p="lg">
+            <Badge color="green" className="mb-2">
+              Recommended
+            </Badge>
+            <Title order={3} className="text-xl mb-2">
+              Grocery Shopping
+            </Title>
+            <Text className="text-gray-600 mb-4">
+              Follow a shopping list and pay at checkout.
+            </Text>
+            <Button variant="light" className="w-full">
+              Start Learning
+            </Button>
+          </Card>
+
+          <Card shadow="sm" p="lg">
+            <Badge color="orange" className="mb-2">
+              Popular
+            </Badge>
+            <Title order={3} className="text-xl mb-2">
+              Using Smartphone
+            </Title>
+            <Text className="text-gray-600 mb-4">
+              Essential skills for using your smartphone.
+            </Text>
+            <Button variant="light" className="w-full">
+              Start Learning
+            </Button>
+          </Card>
+        </div>
+      </div>
+    </Container>
   );
 }
