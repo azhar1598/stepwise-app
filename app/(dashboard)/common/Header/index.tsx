@@ -16,7 +16,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="bg-white border-b border-gray-200 py-4 px-4 flex justify-between items-center sticky top-0 z-10">
+      <div className="bg-white border-b border-gray-200 py-4 px-4 flex justify-between items-center sticky top-0 z-[1000]">
         <Link href="/">
           <Image src={logo} alt="logo" width={150} height={150} />
         </Link>

@@ -2,7 +2,7 @@
 import { Button } from "@mantine/core";
 import { Camera } from "lucide-react";
 
-export default function CameraButton({ startCamera }) {
+export default function CameraButton({ startCamera }: any) {
   return (
     <div className="z-10 w-full flex justify-center">
       <Button

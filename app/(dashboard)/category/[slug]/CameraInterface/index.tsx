@@ -6,10 +6,11 @@ import Webcam from "react-webcam";
 export default function CameraInterface({
   onCapture,
   onCancel,
+  onStore,
   cameraError,
   setCameraError,
 }: any) {
-  const webcamRef = useRef(null);
+  const webcamRef: any = useRef(null);
 
   const takePhoto = () => {
     if (!webcamRef.current) {
@@ -18,21 +19,23 @@ export default function CameraInterface({
     }
 
     try {
-      const imageSrc = webcamRef.current.getScreenshot();
+      const imageSrc = webcamRef.current?.getScreenshot();
       onCapture(imageSrc);
-    } catch (err) {
+      onStore(imageSrc);
+      onCancel();
+    } catch (err: any) {
       console.error("Error capturing photo:", err);
       setCameraError(`Error capturing photo: ${err.message}`);
     }
   };
 
-  const handleWebcamError = (error) => {
+  const handleWebcamError = (error: any) => {
     console.error("Webcam error:", error);
     setCameraError(`Camera access error: ${error.message || "Unknown error"}`);
   };
 
   const CameraFallback = () => {
-    const fileInputRef = useRef(null);
+    const fileInputRef: any = useRef(null);
 
     const openFilePicker = () => {
       if (fileInputRef.current) {
@@ -40,11 +43,11 @@ export default function CameraInterface({
       }
     };
 
-    const handleFileSelect = (e) => {
+    const handleFileSelect = (e: any) => {
       if (e.target.files && e.target.files[0]) {
         const reader = new FileReader();
-        reader.onload = (event) => {
-          onCapture(event.target.result);
+        reader.onload = (event: any) => {
+          onCapture(event.target?.result);
         };
         reader.readAsDataURL(e.target.files[0]);
       }
