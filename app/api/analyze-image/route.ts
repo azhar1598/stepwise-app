@@ -4,32 +4,32 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   // return NextResponse.json({ message: "Hello, world!" });
 
-  return NextResponse.json([
-    {
-      id: 1,
-      description: "Wash your hands",
-      audioUrl: "/audio/wash-hands.mp3",
-      category: "cooking-eating",
-    },
-    {
-      id: 2,
-      description: "Pick up the spoon",
-      audioUrl: "/audio/pick-spoon.mp3",
-      category: "cooking-eating",
-    },
-    {
-      id: 3,
-      description: "Put the spoon in your mouth",
-      audioUrl: "/audio/put-spoon-in-mouth.mp3",
-      category: "cooking-eating",
-    },
-    {
-      id: 4,
-      description: "Put the spoon in your mouth",
-      audioUrl: "/audio/put-spoon-in-mouth.mp3",
-      category: "cooking-eating",
-    },
-  ]);
+  // return NextResponse.json([
+  //   {
+  //     id: 1,
+  //     description: "Wash your hands",
+  //     audioUrl: "/audio/wash-hands.mp3",
+  //     category: "cooking-eating",
+  //   },
+  //   {
+  //     id: 2,
+  //     description: "Pick up the spoon",
+  //     audioUrl: "/audio/pick-spoon.mp3",
+  //     category: "cooking-eating",
+  //   },
+  //   {
+  //     id: 3,
+  //     description: "Put the spoon in your mouth",
+  //     audioUrl: "/audio/put-spoon-in-mouth.mp3",
+  //     category: "cooking-eating",
+  //   },
+  //   {
+  //     id: 4,
+  //     description: "Put the spoon in your mouth",
+  //     audioUrl: "/audio/put-spoon-in-mouth.mp3",
+  //     category: "cooking-eating",
+  //   },
+  // ]);
   try {
     const { image } = await request.json();
 
