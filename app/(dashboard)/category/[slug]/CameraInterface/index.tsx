@@ -1,18 +1,27 @@
-import { useState, useRef } from "react";
-import { Button } from "@mantine/core";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { ActionIcon } from "@mantine/core";
+import { Camera, X, CameraOff } from "lucide-react";
 import Webcam from "react-webcam";
 
-export default function CameraInterface({
+export default function AdvancedCameraInterface({
   onCapture,
   onCancel,
   onStore,
   cameraError,
   setCameraError,
 }: any) {
-  const webcamRef: any = useRef(null);
-  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+  const webcamRef = useRef<Webcam>(null);
+  const [facingMode, setFacingMode] = useState<"user" | "environment">(
+    "environment"
+  );
+  const [zoomLevel, setZoomLevel] = useState(1);
 
-  const takePhoto = () => {
+  const videoConstraints: any = {
+    facingMode: facingMode,
+    advanced: [{ zoom: zoomLevel }],
+  };
+
+  const takePhoto = useCallback(() => {
     if (!webcamRef.current) {
       console.error("Webcam reference is null");
       return;
@@ -27,96 +36,101 @@ export default function CameraInterface({
       console.error("Error capturing photo:", err);
       setCameraError(`Error capturing photo: ${err.message}`);
     }
+  }, [webcamRef, onCapture, onStore, onCancel, setCameraError]);
+
+  // Zoom handling
+  const handleZoom = (direction: "in" | "out") => {
+    if (direction === "in") {
+      setZoomLevel(Math.min(10, zoomLevel + 1));
+    } else {
+      setZoomLevel(Math.max(1, zoomLevel - 1));
+    }
   };
 
+  // Toggle between front and back cameras
   const toggleCamera = () => {
-    setFacingMode((prevMode) => (prevMode === "user" ? "environment" : "user"));
-  };
-
-  const handleWebcamError = (error: any) => {
-    console.error("Webcam error:", error);
-    setCameraError(`Camera access error: ${error.message || "Unknown error"}`);
-  };
-
-  const CameraFallback = () => {
-    const fileInputRef: any = useRef(null);
-
-    const openFilePicker = () => {
-      if (fileInputRef.current) {
-        fileInputRef.current.click();
-      }
-    };
-
-    const handleFileSelect = (e: any) => {
-      if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (event: any) => {
-          onCapture(event.target?.result);
-        };
-        reader.readAsDataURL(e.target.files[0]);
-      }
-    };
-
-    return (
-      <div className="text-center p-4">
-        <p className="text-red-500 mb-4">{cameraError}</p>
-        <p className="mb-4">Try using your device's camera instead:</p>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-        <Button onClick={openFilePicker}>Open Camera</Button>
-      </div>
-    );
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
   };
 
   return (
-    <div className="fixed inset-0 bg-black z-20 flex flex-col">
-      <div className="flex-1 relative">
-        {cameraError ? (
-          <CameraFallback />
-        ) : (
-          <Webcam
-            key={facingMode} // Force re-render when switching cameras
-            ref={webcamRef}
-            audio={false}
-            screenshotFormat="image/jpeg"
-            videoConstraints={{
-              facingMode: facingMode,
-            }}
-            onUserMediaError={handleWebcamError}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        )}
+    <div className="fixed inset-0 bg-white z-50 flex flex-col">
+      {/* Camera View */}
+      <div className="relative flex-1 overflow-hidden">
+        <Webcam
+          key={facingMode}
+          ref={webcamRef}
+          audio={false}
+          screenshotFormat="image/jpeg"
+          videoConstraints={videoConstraints}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Top Controls */}
+        <div className="absolute top-4 left-4 right-4 flex justify-between z-10">
+          <ActionIcon
+            variant="filled"
+            color="gray"
+            onClick={onCancel}
+            aria-label="Close Camera"
+            className="bg-white/50 backdrop-blur-sm"
+          >
+            <X size={24} />
+          </ActionIcon>
+        </div>
       </div>
-      <div className="bg-black p-6 flex justify-center space-x-4">
-        <Button
-          size="xl"
-          radius="xl"
-          className="bg-white text-black hover:bg-gray-200 w-16 h-16 p-0"
-          onClick={takePhoto}
-          disabled={!!cameraError}
-        >
-          <div className="w-12 h-12 rounded-full border-2 border-black"></div>
-        </Button>
-        <Button
-          size="xl"
-          variant="outline"
-          color="white"
-          onClick={toggleCamera}
-          disabled={!!cameraError}
-        >
-          {facingMode === "user" ? "Back Camera" : "Front Camera"}
-        </Button>
-      </div>
-      <div className="bg-black p-2 flex justify-end">
-        <Button variant="subtle" color="red" onClick={onCancel}>
-          Cancel
-        </Button>
+
+      {/* Bottom Control Panel */}
+      <div className="bg-white/90 backdrop-blur-md p-4 pb-6 rounded-t-3xl shadow-2xl">
+        {/* Camera Selection */}
+        <div className="flex justify-center space-x-4 mb-4">
+          <button
+            onClick={toggleCamera}
+            className={`px-4 py-2 rounded-full text-sm ${
+              facingMode === "environment"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            Rear Camera
+          </button>
+          <button
+            onClick={toggleCamera}
+            className={`px-4 py-2 rounded-full text-sm ${
+              facingMode === "user"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+          >
+            Front Camera
+          </button>
+        </div>
+
+        {/* Zoom Controls */}
+        <div className="flex justify-center space-x-4 mb-4">
+          <button
+            onClick={() => handleZoom("out")}
+            className="bg-gray-200 p-2 rounded-full"
+          >
+            -
+          </button>
+          <div className="self-center">Zoom: {zoomLevel}x</div>
+          <button
+            onClick={() => handleZoom("in")}
+            className="bg-gray-200 p-2 rounded-full"
+          >
+            +
+          </button>
+        </div>
+
+        {/* Capture Button */}
+        <div className="flex justify-center">
+          <button
+            onClick={takePhoto}
+            className="w-20 h-20 rounded-full bg-blue-500 text-white flex items-center justify-center shadow-lg hover:bg-blue-600 transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300"
+          >
+            <div className="w-16 h-16 rounded-full border-2 border-white"></div>
+          </button>
+        </div>
       </div>
     </div>
   );
