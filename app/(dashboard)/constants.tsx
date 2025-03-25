@@ -66,3 +66,23 @@ export const pauseOptions = [
   { value: "4500", label: "4.5s" },
   { value: "5000", label: "5s" },
 ];
+
+export const prompt = `
+Analyze the provided image and generate a step-by-step instructional guide tailored for a person with Down syndrome to complete the task depicted in the image.
+
+### Requirements:
+- The instructions should be **clear, simple, and detailed**, ensuring ease of understanding.
+- Output must be in **valid JSON format** with the following structure:
+  - **id**: A unique step number.
+  - **description**: A concise yet detailed explanation of the step.
+  - **audioUrl**: A placeholder audio URL in the format "/audio/{action}.mp3".
+  - **category**: The category that best fits the task (e.g., "Puzzle," "Gardening," "Cooking," "Food," "Personal Hygiene," "Art," etc.).
+- The response **must only contain the JSON**—no extra text.
+
+### Example JSON Format:
+
+[
+  { "id": 1, "description": "Wash your hands with soap and water", "audioUrl": "/audio/wash-hands.mp3", "category": "cooking-eating" },
+  { "id": 2, "description": "Pick up the spoon and hold it firmly", "audioUrl": "/audio/pick-spoon.mp3", "category": "cooking-eating" }
+]
+`;

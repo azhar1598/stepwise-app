@@ -333,7 +333,7 @@ export default function Instructions({ currentImage, onClose, steps }: any) {
   };
 
   return (
-    <div className="bg-blue-50 px-2 py-6 rounded-xl shadow-xl max-w-md w-full border border-gray-200 overflow-hidden">
+    <div className="px-2 py-6 rounded-xl shadosw-xl max-w-md w-full border border-gray-200 overflow-hidden">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800 flex items-center">
           <span className="bg-blue-100 text-blue-600 p-2 rounded-lg mr-2">
@@ -341,13 +341,13 @@ export default function Instructions({ currentImage, onClose, steps }: any) {
           </span>
           Instructions
         </h2>
-        <button
+        {/* <button
           className="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100"
           onClick={onClose}
           aria-label="Close instructions"
         >
           <X size={20} />
-        </button>
+        </button> */}
       </div>
 
       <div className="mb-4 flex justify-between items-center">
@@ -408,7 +408,7 @@ export default function Instructions({ currentImage, onClose, steps }: any) {
       </div>
 
       {formattedSteps.length > 0 ? (
-        <div className="space-y-3 max-h-96 overflow-y-auto  custom-scrollbar">
+        <div className="space-y-3 max-h- over  custom-scrollbar">
           {formattedSteps.map((step) => (
             <StepCard key={step.id} step={step} />
           ))}

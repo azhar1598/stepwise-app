@@ -1,3 +1,4 @@
+import { prompt } from "@/app/(dashboard)/constants";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
@@ -56,20 +57,6 @@ export async function POST(request: Request) {
     };
 
     // Updated Prompt with Context for JSON Response
-    const prompt = `
-      Analyze this image and generate step-by-step instructions for a person with Down syndrome to complete the task in the image.
-      The instructions should be in JSON format with an ID, a short description, and an audio URL for each step.
-      The audio URLs should be placeholders in the format "/audio/{action}.mp3".
-      Do not include any additional text outside the JSON response.
-      
-      Example JSON format:
-      [
-        { "id": 1, "description": "Wash your hands", "audioUrl": "/audio/wash-hands.mp3",category:"cooking-eating" },
-        { "id": 2, "description": "Pick up the spoon", "audioUrl": "/audio/pick-spoon.mp3",category:"cooking-eating" }
-      ]
-      
-      Now generate the JSON based on the image task.
-    `;
 
     // Generate content with the image
     const result = await model.generateContent([prompt, imagePart]);
@@ -81,6 +68,8 @@ export async function POST(request: Request) {
     // below working code line
     const analysis: any = response.text().match(/\[[\s\S]*\]/);
     // .match(/\[.*\]/s);
+    //
+    //
 
     if (!analysis) {
       throw new Error("Invalid response format");

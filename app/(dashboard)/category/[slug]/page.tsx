@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import makeBed from "../../../../public/task-assets/make-bed.jpeg";
 import ImagePreview from "./ImagePreview";
 import CameraButton from "./CameraButton";
 import CameraInterface from "./CameraInterface";
 import AnalysisModal from "./AnalysisModal";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { categories } from "../../constants";
 import Image from "next/image";
 import Instructions from "./Instructions";
@@ -27,7 +27,15 @@ export default function Category() {
   const [currentImage, setCurrentImage] = useState([]);
   const [instructions, setInstructions] = useState([]);
 
-  console.log;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (showCamera) {
+      router.push(`?cameraOpen=true`);
+      return;
+    }
+    router.push(`?cameraOpen=false`);
+  }, [showCamera]);
 
   const startCamera = () => {
     setCameraError(null);
@@ -110,7 +118,7 @@ export default function Category() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screesn bg-gray-50 flex flex-col pb-5">
       <div className="aspect-video relative">
         <Image
           src={
@@ -146,7 +154,10 @@ export default function Category() {
         <ImagePreview
           image={capturedImage}
           onSave={() => savePhoto(capturedImage)}
-          onDiscard={() => setCapturedImage(null)}
+          onDiscard={() => {
+            setCapturedImage(null);
+            setStoreImage(null);
+          }}
           isAnalyzing={isAnalyzing}
         />
       )}
@@ -159,7 +170,7 @@ export default function Category() {
           onClose={closeAnalysis}
         />
       )} */}
-      {instructions.length > 0 && (
+      {instructions.length > 0 && !isAnalyzing && (
         <Instructions
           steps={instructions}
           currentImage={currentImage}
