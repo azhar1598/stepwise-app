@@ -1,5 +1,4 @@
-// app/camera-page/components/CameraInterface.js
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@mantine/core";
 import Webcam from "react-webcam";
 
@@ -11,6 +10,7 @@ export default function CameraInterface({
   setCameraError,
 }: any) {
   const webcamRef: any = useRef(null);
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
 
   const takePhoto = () => {
     if (!webcamRef.current) {
@@ -27,6 +27,10 @@ export default function CameraInterface({
       console.error("Error capturing photo:", err);
       setCameraError(`Error capturing photo: ${err.message}`);
     }
+  };
+
+  const toggleCamera = () => {
+    setFacingMode((prevMode) => (prevMode === "user" ? "environment" : "user"));
   };
 
   const handleWebcamError = (error: any) => {
@@ -77,18 +81,19 @@ export default function CameraInterface({
           <CameraFallback />
         ) : (
           <Webcam
+            key={facingMode} // Force re-render when switching cameras
             ref={webcamRef}
             audio={false}
             screenshotFormat="image/jpeg"
             videoConstraints={{
-              facingMode: "user",
+              facingMode: facingMode,
             }}
             onUserMediaError={handleWebcamError}
             className="absolute inset-0 w-full h-full object-cover"
           />
         )}
       </div>
-      <div className="bg-black p-6 flex justify-center">
+      <div className="bg-black p-6 flex justify-center space-x-4">
         <Button
           size="xl"
           radius="xl"
@@ -97,6 +102,15 @@ export default function CameraInterface({
           disabled={!!cameraError}
         >
           <div className="w-12 h-12 rounded-full border-2 border-black"></div>
+        </Button>
+        <Button
+          size="xl"
+          variant="outline"
+          color="white"
+          onClick={toggleCamera}
+          disabled={!!cameraError}
+        >
+          {facingMode === "user" ? "Back Camera" : "Front Camera"}
         </Button>
       </div>
       <div className="bg-black p-2 flex justify-end">

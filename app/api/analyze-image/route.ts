@@ -76,10 +76,12 @@ export async function POST(request: Request) {
     const response = await result.response;
 
     // Extract JSON from response text
-    const analysis: any = response.text().match(/\[.*\]/); // Extract JSON array from response
+    // const analysis: any = response.text().match(/\[.*\]/); // Extract JSON array from response
 
     // below working code line
-    // const analysis: any = response.text().match(/\[.*\]/s);
+    const analysis: any = response.text().match(/\[[\s\S]*\]/);
+    // .match(/\[.*\]/s);
+
     if (!analysis) {
       throw new Error("Invalid response format");
     }
