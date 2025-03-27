@@ -170,14 +170,13 @@ export default function Category() {
           onClose={closeAnalysis}
         />
       )} */}
-      {instructions.length > 0 &&
-        !isAnalyzing(
-          <Instructions
-            steps={instructions}
-            currentImage={currentImage}
-            onClose={closeAnalysis}
-          />
-        )}
+      {instructions.length > 0 && !isAnalyzing && (
+        <Instructions
+          steps={instructions}
+          currentImage={currentImage}
+          onClose={closeAnalysis}
+        />
+      )}
     </div>
   );
 }
