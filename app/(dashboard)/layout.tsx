@@ -28,8 +28,8 @@ export default function RootLayout({
     <div className="max-w-[675px]">
       <Suspense fallback={<Loader />}>
         <Header />
-        {children}
       </Suspense>
+      {children}
     </div>
   );
 }
